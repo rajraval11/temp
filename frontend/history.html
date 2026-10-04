@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History - AI Temperature Monitor</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h2>Smart Predictive Maintenance</h2>
+                <p>AI-Powered Machine Health Monitoring</p>
+            </div>
+            <nav>
+                <a href="/">Dashboard</a>
+                <a href="#">Analytics</a>
+                <a href="#">Alerts <span class="badge">10</span></a>
+                <a href="/history.html" class="active">History</a>
+                <a href="/system.html">System Status</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div>
+                    <h1>Historical Readings</h1>
+                    <p>Recent machine sensor data</p>
+                </div>
+            </header>
+
+            <div class="card" style="overflow-x: auto; padding: 0;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Time</th>
+                            <th>Machine</th>
+                            <th>Temperature (°C)</th>
+                            <th>Prediction (°C)</th>
+                            <th>Status</th>
+                            <th>Source</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-tbody">
+                        <!-- Data populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script src="/static/js/history.js"></script>
+</body>
+</html>

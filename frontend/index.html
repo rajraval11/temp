@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Machine Temperature Monitor</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h2>Smart Predictive Maintenance</h2>
+                <p>AI-Powered Machine Health Monitoring</p>
+            </div>
+            <nav id="sidebar-nav">
+                <a href="#" data-target="view-dashboard" class="nav-link active">Dashboard</a>
+                <a href="#" data-target="view-analytics" class="nav-link">Analytics</a>
+                <a href="#" data-target="view-alerts" class="nav-link">Alerts <span class="badge" id="alert-badge">0</span></a>
+                <a href="#" data-target="view-history" class="nav-link">History</a>
+                <a href="#" data-target="view-system" class="nav-link">System Status</a>
+            </nav>
+            <div class="machine-info">
+                <h3>Machine 01</h3>
+                <p id="conn-status" class="status-indicator online">● Connected</p>
+                <div class="info-row"><span>Machine ID</span><span>MACHINE-01</span></div>
+                <div class="info-row"><span>Sensor</span><span>LM35</span></div>
+                <div class="info-row">
+                    <span>Mode</span>
+                    <select id="mode-selector">
+                        <option value="SIMULATION">Simulation</option>
+                        <option value="HARDWARE">Hardware</option>
+                    </select>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div>
+                    <h1 id="page-title">Machine Overview</h1>
+                    <p id="page-subtitle">Real-time monitoring and predictive analysis</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn" id="theme-toggle" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-main);">🌙 Dark</button>
+                    <button class="btn btn-primary" id="btn-start-sim">▶ Start</button>
+                    <button class="btn btn-danger" id="btn-stop-sim">■ Stop</button>
+                    <span class="system-tag" id="sim-status-tag">● Live Monitoring</span>
+                    <span id="system-time"></span>
+                </div>
+            </header>
+
+            <div id="view-dashboard" class="view-section active">
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-title">Temperature</div>
+                        <div class="card-value"><span id="current-temp">--</span> °C</div>
+                        <div class="card-subtitle" id="temp-trend">--</div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-title">Machine Status</div>
+                        <div class="card-value status-text" id="system-status">--</div>
+                        <div class="card-subtitle" id="status-desc">--</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">AI Risk Score</div>
+                        <div class="card-value" id="ai-risk">--</div>
+                        <div class="card-subtitle" id="ai-risk-desc">--</div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-title">Machine Health</div>
+                        <div class="card-value" id="machine-health">--</div>
+                        <div class="card-subtitle" id="machine-health-desc">--</div>
+                    </div>
+                </div>
+
+                <div class="middle-grid">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3>Temperature Trend</h3>
+                            <p>Recent temperature readings</p>
+                        </div>
+                        <canvas id="tempChart"></canvas>
+                    </div>
+
+                    <div class="right-panel">
+                        <div class="prediction-card">
+                            <h3>AI Prediction</h3>
+                            <p class="subtitle">Machine learning analysis</p>
+                            <div class="pred-box" id="pred-box">
+                                <h2 id="pred-text">--</h2>
+                                <p id="pred-desc">--</p>
+                                <p style="margin-top: 10px; font-weight: bold;">Predicted Next: <span id="predicted-temp">--</span> °C</p>
+                            </div>
+                        </div>
+                        
+                        <div class="controls-container mt-4">
+                            <h3>Simulation Scenario</h3>
+                            <select id="sim-scenario" class="full-select">
+                                <option value="normal">Normal Operation</option>
+                                <option value="increasing">Increasing Load</option>
+                                <option value="overheating">Overheating</option>
+                                <option value="random">Random Variations</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-analytics" class="view-section" style="display: none;">
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-title">Total Readings</div>
+                        <div class="card-value" id="analytics-count">--</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Average Temp</div>
+                        <div class="card-value"><span id="analytics-avg-t">--</span> °C</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Max Temp</div>
+                        <div class="card-value"><span id="analytics-max-t">--</span> °C</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Average Prediction</div>
+                        <div class="card-value"><span id="analytics-avg-p">--</span> °C</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Total Warnings</div>
+                        <div class="card-value warning" id="analytics-warn">--</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Total High Risks</div>
+                        <div class="card-value danger" id="analytics-high">--</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-alerts" class="view-section" style="display: none;">
+                <div class="card" style="padding: 0; border: none; background: transparent; box-shadow: none;">
+                    <div id="alerts-container" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-history" class="view-section" style="display: none;">
+                <div class="card" style="overflow-x: auto; padding: 0;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Time</th>
+                                <th>Temperature (°C)</th>
+                                <th>Prediction (°C)</th>
+                                <th>Status</th>
+                                <th>Source</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="view-system" class="view-section" style="display: none;">
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-title">Backend Status</div>
+                        <div class="card-value status-text NORMAL" id="sys-backend">Checking...</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Database</div>
+                        <div class="card-value status-text NORMAL" id="sys-db">Checking...</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">ML Model</div>
+                        <div class="card-value" id="sys-ml">Checking...</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Current Mode</div>
+                        <div class="card-value" id="sys-mode">Checking...</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Arduino Connection</div>
+                        <div class="card-value" id="sys-arduino">Checking...</div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>
